@@ -7,6 +7,7 @@ use App\student;
 use Illuminate\Support\Facades\DB;
 use App\Exports\CsvExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Dompdf\Adapter\PDFLib;
 
 class CrudController extends Controller
 {
@@ -20,10 +21,51 @@ class CrudController extends Controller
         return view('pages.index',['all_student_details' => student::all(),'state_data'=>DB::table('states')->get(),'city_data'=>DB::table('cities')->get()]);
     }
 
+
+    // function for excel file download
     public function csv_export(){
         // dd('hello');
         return Excel::download(new CsvExport,'Students.csv');
     }
+
+    // pdf file download starts here
+
+        public function get_student_data(){
+            $student_data = student::get();
+            return $student_data;
+        }
+        public function pdf(){
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($this->convert_student_data_to_html());
+            return $pdf->stream();
+        }
+        public function convert_student_data_to_html(){
+            $student_data = $this->get_student_data();
+            // dd($student_data);
+            $output = '
+                <table border="1"><tr>
+                <td>Roll</td>
+                <td>Name</td>
+                <td>State</td>
+                <td>City</td>
+                </tr>
+            ';
+            foreach($student_data as $student){
+                $output .= 
+                '
+                <tr>
+                <td>'.$student->student_roll.'</td>
+                <td>'.$student->student_name.'</td>
+                <td>'.$student->student_state.'</td>
+                <td>'.$student->student_city.'</td>
+                </tr>
+                ';
+            }
+            $output .='</table>';
+            return $output;
+        }
+
+    // pdf file download ends here
 
     /**
      * Show the form for creating a new resource.
