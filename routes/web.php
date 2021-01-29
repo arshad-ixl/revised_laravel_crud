@@ -17,3 +17,4 @@ Route::get('/', function () {
 
 Route::resource('/students', 'CrudController');
 Route::get('findcities','CrudController@cities')->name('students.cities');
+Route::get('export','CrudController@csv_export')->name('student.export');

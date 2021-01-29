@@ -40,7 +40,7 @@
                     <a class="btn btn-outline-light mx-1" aria-current="page" href="{{route('students.create')}}">Create New Record</a>
                   </li>
                   <li class="nav-item">
-                    <button class="btn btn-outline-light" type="submit">Download Data</button>
+                    <a class="btn btn-outline-light" href="{{route('student.export')}}">Download Data</a>
                   </li>
                 </ul>
                 <form class="d-flex">

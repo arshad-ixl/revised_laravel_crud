@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\student;
 use Illuminate\Support\Facades\DB;
+use App\Exports\CsvExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CrudController extends Controller
 {
@@ -16,6 +18,11 @@ class CrudController extends Controller
     public function index()
     {
         return view('pages.index',['all_student_details' => student::all(),'state_data'=>DB::table('states')->get(),'city_data'=>DB::table('cities')->get()]);
+    }
+
+    public function csv_export(){
+        // dd('hello');
+        return Excel::download(new CsvExport,'Students.csv');
     }
 
     /**
