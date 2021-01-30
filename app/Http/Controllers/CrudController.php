@@ -18,23 +18,18 @@ class CrudController extends Controller
      */
     public function index(Request $request)
     {
-       
+       $state_query = DB::table('states')->get();
+       $city_query = DB::table('cities')->get();
+       $student_query = student::all();
+
         if($request->input('search')){
             $searched_student = $request->input('search');
-            $search_list = student::where('student_name','like','%'.$searched_student.'%')->get();
-            return view('pages.index',['all_student_details' => $search_list,'state_data'=>DB::table('states')->get(),'city_data'=>DB::table('cities')->get()]);
+            $student_query = student::where('student_name','like','%'.$searched_student.'%')->get();
+            return view('pages.index',['all_student_details' => $student_query,'state_data'=>$state_query,'city_data'=>$city_query]);
         }else{
-            return view('pages.index',['all_student_details' => student::all(),'state_data'=>DB::table('states')->get(),'city_data'=>DB::table('cities')->get()]);
+            return view('pages.index',['all_student_details' => $student_query,'state_data'=>$state_query,'city_data'=>$city_query]);
         }
     }
-
-    // search functionality
-    // public function search(Request $request){
-    //     $search = $request->input('search');
-    //     $search_list = student::where('student_name','like','%'.$search.'%');
-    //     dd($search_list);
-    //     return view('pages.index',['all_student_details'=>$search_list]);
-    // }
 
 
     // function for excel file download
