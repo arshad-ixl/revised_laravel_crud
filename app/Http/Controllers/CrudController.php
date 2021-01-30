@@ -16,10 +16,25 @@ class CrudController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('pages.index',['all_student_details' => student::all(),'state_data'=>DB::table('states')->get(),'city_data'=>DB::table('cities')->get()]);
+       
+        if($request->input('search')){
+            $searched_student = $request->input('search');
+            $search_list = student::where('student_name','like','%'.$searched_student.'%')->get();
+            return view('pages.index',['all_student_details' => $search_list,'state_data'=>DB::table('states')->get(),'city_data'=>DB::table('cities')->get()]);
+        }else{
+            return view('pages.index',['all_student_details' => student::all(),'state_data'=>DB::table('states')->get(),'city_data'=>DB::table('cities')->get()]);
+        }
     }
+
+    // search functionality
+    // public function search(Request $request){
+    //     $search = $request->input('search');
+    //     $search_list = student::where('student_name','like','%'.$search.'%');
+    //     dd($search_list);
+    //     return view('pages.index',['all_student_details'=>$search_list]);
+    // }
 
 
     // function for excel file download

@@ -46,8 +46,8 @@
                     <a class="btn btn-outline-light mx-1" href="{{route('students.pdf')}}">Download Pdf</a>
                   </li>
                 </ul>
-                <form class="d-flex">
-                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <form action="{{route('students.index')}}" method="get" class="d-flex">
+                  <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search">
                   <button class="btn btn-outline-light" type="submit">Search</button>
                 </form>
               </div>
